@@ -65,11 +65,11 @@ public class Tile {
 			g.fillRect(x, y, width, height);
 		}
 		else if(display.equals("X")){
-			g.setFont(new Font("Chiller", Font.PLAIN, 40));
+			g.setFont(new Font("Chiller", Font.PLAIN, 30));
 			g.drawString("X",    (int)(x+(double)this.width/2.3)-5   ,   (int)(y+(double)this.height/2.3)+15);
 		}
 		else{
-			g.setFont(new Font("Chiller", Font.PLAIN, 40));
+			g.setFont(new Font("Chiller", Font.PLAIN, 30));
 			g.drawString(""+bombsNearBy,   (int)(x+(double)this.width/2.3)-5   ,   (int)(y+(double)this.height/2.3)+15);
 		}
 

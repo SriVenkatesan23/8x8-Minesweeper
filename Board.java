@@ -5,26 +5,27 @@ public class Board {
 
 	Tile[][] board;
 	boolean gameOver;
+	boolean win;
 	int noOfBombs;
 	int tilesOpened;
 	int x, y;
 	int width, height;
-	boolean win;
+	int hw;
+	
 
-
-
-
-
-	public Board(int x, int y, int width, int height){//sets values of variables for the board
-		this.board=new Tile[8][8];
+	public Board(int x, int y, int width, int height, int size){//sets values of variables for the board
+		hw=size;
+		this.board=new Tile[hw][hw];
 		this.x = x;
 		this.y = y;
 		this.height = height;
 		this.width = width;
 		gameOver=false;
-		noOfBombs=0;
+		noOfBombs=(int)(hw*1.5);
 		tilesOpened=0;
 		win=false;
+		
+		
 		
 		this.board = setTileNeighbors(); //sets each tile's right up down etc neighbor
 		this.board = addBombs(); //adds bombs into the board
@@ -33,8 +34,8 @@ public class Board {
 	}
 
 	public Board updateBoard(int checkX, int checkY){//when the player clicks a square, it sets the value of the square to their icon (x or y)
-		for(int r = 0; r < 8; r++){
-			for(int c = 0; c < 8; c++){
+		for(int r = 0; r < hw; r++){
+			for(int c = 0; c < hw; c++){
 				if(board[r][c].contains(checkX, checkY)){
 					board[r][c].setDisplayValue();
 					tilesOpened++;
@@ -46,7 +47,7 @@ public class Board {
 					else if(board[r][c].bombsNearBy==0){//if the clicked tile is empty, set values for all surrounding tiles
 						board[r][c]=this.revealSurrounding(board[r][c]);
 					}
-					if(this.tilesOpened+this.noOfBombs==64){
+					if(this.tilesOpened+this.noOfBombs==(hw*hw)){
 						win=true;
 					}
 					return this;
@@ -58,8 +59,8 @@ public class Board {
 	}
 
 	public void display(Graphics g) { //prints out the board so the players can see it
-		for(int r = 0; r < 8; r++){
-			for (int c = 0; c < 8; c++){
+		for(int r = 0; r < hw; r++){
+			for (int c = 0; c < hw; c++){
 				board[r][c].display(g);
 			}
 		}
@@ -117,14 +118,14 @@ public class Board {
 		return t;
 	}
 	public Tile[][] setTileNeighbors(){
-		for(int r = 0; r < 8; r++){
-			for (int c = 0; c < 8; c++){
-				board[r][c] = new Tile(x + c*width/8, y + r*height/8, width / 8, height / 8);
+		for(int r = 0; r < hw; r++){
+			for (int c = 0; c < hw; c++){
+				board[r][c] = new Tile(x + c*width/hw, y + r*height/hw, width / hw, height / hw);
 			}
 		}
-		for(int r = 0; r < 8; r++){
-			for (int c = 0; c < 8; c++){
-				if(c+1<8){ //right is set if not the last column
+		for(int r = 0; r < hw; r++){
+			for (int c = 0; c < hw; c++){
+				if(c+1<hw){ //right is set if not the last column
 					board[r][c].right=board[r][c+1];
 				}
 				if(c-1>-1){ //left
@@ -133,19 +134,19 @@ public class Board {
 				if(r-1>-1){ //up
 					board[r][c].up=board[r-1][c];
 				}
-				if(r+1<8){ //down
+				if(r+1<hw){ //down
 					board[r][c].down=board[r+1][c];
 				}
-				if(c+1<8 && r-1>-1){ //top-right
+				if(c+1<hw && r-1>-1){ //top-right
 					board[r][c].tright=board[r-1][c+1];
 				}
 				if(c-1>-1 && r-1>-1 ){ //top-left 
 					board[r][c].tleft=board[r-1][c-1];
 				}
-				if(c+1<8 && r+1<8 ){ //down-right 
+				if(c+1<hw && r+1<hw ){ //down-right 
 					board[r][c].dright=board[r+1][c+1];
 				}
-				if(c-1>-1 && r+1<8  ){ //down-left 
+				if(c-1>-1 && r+1<hw  ){ //down-left 
 					board[r][c].dleft=board[r+1][c-1];
 				}
 			}
@@ -157,12 +158,13 @@ public class Board {
 	}
 	public Tile[][] addBombs(){
 		
-		while(this.noOfBombs<10){
-			int a=new Random().nextInt(8);
-			int b=new Random().nextInt(8);
+		int counter=0;
+		while(counter<noOfBombs){
+			int a=new Random().nextInt(hw);
+			int b=new Random().nextInt(hw);
 			if(!this.board[a][b].isBomb){
 				this.board[a][b].isBomb=true;
-				this.noOfBombs++;
+				counter++;
 			}
 		}
 		
@@ -171,8 +173,8 @@ public class Board {
 	}
 	public Tile[][] incrBombs(Tile[][] board){
 
-		for(int r = 0; r < 8; r++){
-			for (int c = 0; c < 8; c++){
+		for(int r = 0; r < hw; r++){
+			for (int c = 0; c < hw; c++){
 				
 				if(board[r][c].isBomb){ //bomb tiles have a bombsNearBy count of 0
 					continue;

@@ -9,7 +9,7 @@ import java.awt.event.MouseListener;
 import java.applet.Applet;
 public class Minesweeper extends Applet implements MouseListener  {
 
-	Board gameBoard = new Board(59,85,560,560); //creating gameBoard
+	Board gameBoard = new Board(59,85,560,560, 12); //creating gameBoard
 	boolean begin=false;
 
 	public void init()  //sets initial characteristics for the gameBoard
@@ -31,7 +31,7 @@ public class Minesweeper extends Applet implements MouseListener  {
 			}else{
 				g.setFont(new Font("Chiller", Font.PLAIN, 18));
 				g.drawString("Tiles Opened: "+gameBoard.tilesOpened, 76, 30);
-				g.drawString("Number Of Mines: 10", 76, 60);
+				g.drawString("Number Of Mines: "+gameBoard.noOfBombs, 76, 60);
 			}
 		}
 		else if(gameBoard.win){
