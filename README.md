@@ -1,2 +1,4 @@
-# 8x8-Minesweeper
-64 tile Minesweeper game
+Minesweeper Game
+
+Initial Commit: 8x8
+Second Commit: Modifiable size
